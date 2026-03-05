@@ -1,0 +1,13 @@
+.DS_Store
+
+# Secrets & auth
+pi/.pi/agent/auth.json
+
+# Sessions (ephemeral, large)
+pi/.pi/agent/sessions/
+
+# Binaries (pi recreates these on install)
+pi/.pi/agent/bin/
+
+# Node modules (reinstall via npm install)
+pi/.pi/agent/extensions/node_modules/
