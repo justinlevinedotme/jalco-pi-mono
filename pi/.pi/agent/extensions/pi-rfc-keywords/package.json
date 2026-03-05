@@ -1,0 +1,41 @@
+{
+  "name": "@howaboua/pi-rfc-keywords",
+  "version": "0.1.0",
+  "description": "Pi extension that enforces RFC 2119/8174 uppercase keywords in user prompts",
+  "keywords": [
+    "pi-extension",
+    "pi-package",
+    "rfc2119",
+    "rfc8174"
+  ],
+  "license": "MIT",
+  "files": [
+    "AGENTS.md",
+    "dist",
+    "LICENSE",
+    "README.md",
+    "src"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@mariozechner/pi-coding-agent": "*",
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+     "@mariozechner/pi-coding-agent": "^0.50.0"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/index.js"
+    ]
+  }
+}

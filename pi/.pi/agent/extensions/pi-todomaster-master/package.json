@@ -1,0 +1,35 @@
+{
+  "name": "@howaboua/pi-todomaster",
+  "version": "0.1.0",
+  "description": "TodoMaster extension for Pi",
+  "keywords": [
+    "pi-extension",
+    "pi-package"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "bun build ./index.ts --target=node --format=esm --outfile ./dist/index.js --external @mariozechner/pi-ai --external @mariozechner/pi-coding-agent --external @mariozechner/pi-tui",
+    "typecheck": "bunx tsc -p ./tsconfig.json",
+    "format:check": "oxfmt --check .",
+    "format": "oxfmt .",
+    "verify": "bun run format && bun run typecheck && bun run format:check && bun run build"
+  },
+  "dependencies": {
+    "@howaboua/pi-howaboua-extensions-primitives-sdk": "^0.3.0",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

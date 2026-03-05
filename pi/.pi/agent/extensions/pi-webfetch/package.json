@@ -1,0 +1,25 @@
+{
+  "name": "@howaboua/pi-webfetch",
+  "version": "1.0.0",
+  "description": "Web fetch tool for Pi",
+  "license": "MIT",
+  "keywords": [
+    "pi-extension",
+    "pi-package",
+    "webfetch"
+  ],
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.48",
+    "turndown": "^7.2.0"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-tui": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  }
+}

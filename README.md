@@ -9,6 +9,9 @@ My personal configuration and agent setup for [pi](https://github.com/badlogic/p
 | **confirm-destructive** | Prompts for confirmation before destructive session actions (clear, switch, branch). | [pi examples](https://github.com/badlogic/pi-mono) |
 | **handoff** | Transfer context to a new focused session instead of compacting. Extracts what matters and creates a new session with a generated prompt. | [pi examples](https://github.com/badlogic/pi-mono) |
 | **permission-gate** | Prompts for confirmation before running potentially dangerous bash commands (`rm -rf`, `sudo`, `chmod 777`). | [pi examples](https://github.com/badlogic/pi-mono) |
+| **pi-rfc-keywords** | Uppercases RFC 2119/8174 requirement keywords (`must`, `should`, `may`, etc.) in user prompts automatically. | [howaboua](https://github.com/howaboua) |
+| **pi-todomaster** | Checklist-first planning system with interactive `/todo` UI for managing PRDs, specs, and todos under `.pi/plans`. | [howaboua](https://github.com/howaboua) |
+| **pi-webfetch** | Fetches and converts web content to markdown, text, or HTML. Read-only URL fetching with auto HTTPS upgrade. | [howaboua](https://github.com/howaboua) |
 | **question** | Ask the user a single question with selectable options. Full custom UI with arrow-key navigation and free-form "Type something" input. | [pi examples](https://github.com/badlogic/pi-mono) |
 | **questionnaire** | Ask one or more questions with a tab-based interface. Supports multi-step wizards for clarifying requirements and preferences. | [pi examples](https://github.com/badlogic/pi-mono) |
 | **titlebar-spinner** | Shows a braille spinner animation in the terminal title while the agent is working. | [pi examples](https://github.com/badlogic/pi-mono) |
@@ -48,8 +51,10 @@ cd ~/jalco-pi-mono
 stow -t ~ pi
 
 # Install extension dependencies
-cd ~/.pi/agent/extensions
-npm install
+cd ~/.pi/agent/extensions && npm install
+cd ~/.pi/agent/extensions/pi-rfc-keywords && npm install
+cd ~/.pi/agent/extensions/pi-todomaster-master && npm install  # or: bun install
+cd ~/.pi/agent/extensions/pi-webfetch && npm install
 ```
 
 ## Usage
@@ -72,8 +77,11 @@ jalco-pi-mono/
 │       └── agent/
 │           ├── settings.json       # Pi settings (provider, model)
 │           ├── extensions/         # Custom extensions (.ts)
-│           │   ├── package.json    # Extension dependencies
-│           │   └── *.ts
+│           │   ├── package.json    # Shared extension dependencies
+│           │   ├── *.ts            # Single-file extensions
+│           │   ├── pi-rfc-keywords/
+│           │   ├── pi-todomaster-master/
+│           │   └── pi-webfetch/
 │           └── skills/             # Installed skills
 │               ├── find-skills/
 │               └── shadcn-ui/
@@ -99,4 +107,5 @@ jalco-pi-mono/
 ## Acknowledgments
 
 - [pi](https://github.com/badlogic/pi-mono) by [badlogic](https://github.com/badlogic) — the coding agent that makes this all possible
-- [pi examples](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions) — source of most extensions in this repo
+- [pi examples](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions) — source of several extensions in this repo
+- [howaboua](https://github.com/howaboua) — pi-rfc-keywords, pi-todomaster, and pi-webfetch extensions

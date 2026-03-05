@@ -9,5 +9,9 @@ pi/.pi/agent/sessions/
 # Binaries (pi recreates these on install)
 pi/.pi/agent/bin/
 
-# Node modules (reinstall via npm install)
+# Node modules (reinstall via npm/bun install)
 pi/.pi/agent/extensions/node_modules/
+pi/.pi/agent/extensions/*/node_modules/
+
+# Build artifacts
+pi/.pi/agent/extensions/*/dist/
