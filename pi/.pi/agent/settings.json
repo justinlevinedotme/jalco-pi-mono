@@ -1,5 +1,15 @@
 {
-  "lastChangelogVersion": "0.56.0",
+  "theme": "geist-dark",
+  "lastChangelogVersion": "0.56.2",
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6"
+  "defaultModel": "claude-sonnet-4-5",
+  "defaultThinkingLevel": "off",
+  "quietStartup": true,
+  "enabledModels": [
+    "anthropic/claude-sonnet-4-6",
+    "anthropic/claude-sonnet-4-5",
+    "openai-codex/gpt-5.3-codex",
+    "anthropic/claude-opus-4-6",
+    "ziphu/glm-5"
+  ]
 }

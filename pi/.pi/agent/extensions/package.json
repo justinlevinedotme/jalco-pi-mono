@@ -2,9 +2,12 @@
   "name": "pi-extensions",
   "private": true,
   "dependencies": {
-    "@mariozechner/pi-coding-agent": "*",
     "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*",
     "@mariozechner/pi-tui": "*",
-    "@sinclair/typebox": "*"
+    "@sinclair/typebox": "*",
+    "pi-markdown-preview": "^0.9.1",
+    "pi-notify": "^1.3.0",
+    "pi-updater": "^0.2.8"
   }
 }

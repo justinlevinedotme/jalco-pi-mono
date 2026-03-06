@@ -1,0 +1,16 @@
+{
+  "name": "skills-permissions",
+  "version": "0.1.0",
+  "description": "Interactive skill management for Pi",
+  "type": "module",
+  "devDependencies": {
+    "@mariozechner/pi-coding-agent": "^0.50.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  }
+}
