@@ -11,11 +11,11 @@ My personal configuration and agent setup for [pi](https://github.com/badlogic/p
 | **handoff** | Transfer context to a new focused session instead of compacting. Extracts what matters and creates a new session with a generated prompt. | [pi examples](https://github.com/badlogic/pi-mono) |
 | **hot-reload-extension-v2** | Hot-reload the pi runtime in-place and queue a continuation prompt. | custom |
 | **permission-gate** | Prompts for confirmation before running potentially dangerous bash commands (`rm -rf`, `sudo`, `chmod 777`). | [pi examples](https://github.com/badlogic/pi-mono) |
-| **pi-agent-manager** | Subagent and skill permission manager for Pi. | [howaboua](https://github.com/howaboua) |
-| **pi-rfc-keywords** | Uppercases RFC 2119/8174 requirement keywords (`must`, `should`, `may`, etc.) in user prompts automatically. | [howaboua](https://github.com/howaboua) |
+| **pi-agent-manager** | Subagent and skill permission manager for Pi. | [IgorWarzocha](https://github.com/IgorWarzocha) |
+| **pi-rfc-keywords** | Uppercases RFC 2119/8174 requirement keywords (`must`, `should`, `may`, etc.) in user prompts automatically. | [IgorWarzocha](https://github.com/IgorWarzocha) |
 | **pi-skills-sh** | Integration with the [skills.sh](https://skills.sh) ecosystem. | [skills.sh](https://skills.sh) |
-| **pi-todomaster** | Checklist-first planning system with interactive `/todo` UI for managing PRDs, specs, and todos under `.pi/plans`. | [howaboua](https://github.com/howaboua) |
-| **pi-webfetch** | Fetches and converts web content to markdown, text, or HTML. Read-only URL fetching with auto HTTPS upgrade. | [howaboua](https://github.com/howaboua) |
+| **pi-todomaster** | Checklist-first planning system with interactive `/todo` UI for managing PRDs, specs, and todos under `.pi/plans`. | [IgorWarzocha](https://github.com/IgorWarzocha) |
+| **pi-webfetch** | Fetches and converts web content to markdown, text, or HTML. Read-only URL fetching with auto HTTPS upgrade. | [IgorWarzocha](https://github.com/IgorWarzocha) |
 | **pi-markdown-preview** | Rendered markdown + LaTeX preview with terminal, browser, and PDF output. Supports Mermaid diagrams, syntax highlighting, math rendering, and theme-aware styling. Requires Pandoc. | [omaclaren](https://github.com/omaclaren/pi-markdown-preview) |
 | **pi-notify** | Native desktop notifications when agent finishes and waits for input. Supports Ghostty, iTerm2, WezTerm, Kitty, tmux, and Windows Terminal via OSC escape sequences. | [ferologics](https://github.com/ferologics/pi-notify) |
 | **pi-updater** | Codex-style auto-updater for pi — checks for new versions on startup, prompts to install, and provides `/update` command for manual checks. | [tonze](https://github.com/tonze/pi-updater) |
@@ -161,5 +161,5 @@ jalco-pi-mono/
 - [pi](https://github.com/badlogic/pi-mono) by [badlogic](https://github.com/badlogic) — the coding agent that makes this all possible
 - [pi examples](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions) — source of several extensions in this repo
 - [MCPorter](https://github.com/steipete/mcporter) by [steipete](https://github.com/steipete) — MCP-to-CLI toolkit for generating skills from MCP servers
-- [howaboua](https://github.com/howaboua) — pi-rfc-keywords, pi-todomaster, pi-webfetch, and pi-agent-manager extensions
-- [IgorWarzocha](https://github.com/IgorWarzocha) — component-engineering and security skills, originally from [jalco-opencode](https://github.com/justinlevinedotme/jalco-opencode)
+- [IgorWarzocha](https://github.com/IgorWarzocha) — pi-rfc-keywords, pi-todomaster, pi-webfetch, pi-agent-manager extensions, component-engineering and security skills (originally from jalco-opencode)
+
