@@ -1,8 +1,8 @@
 {
   "theme": "geist-dark",
-  "lastChangelogVersion": "0.56.2",
+  "lastChangelogVersion": "0.57.0",
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-sonnet-4-5",
+  "defaultModel": "claude-opus-4-6",
   "defaultThinkingLevel": "off",
   "quietStartup": true,
   "enabledModels": [
@@ -10,6 +10,14 @@
     "anthropic/claude-sonnet-4-5",
     "openai-codex/gpt-5.3-codex",
     "anthropic/claude-opus-4-6",
-    "ziphu/glm-5"
+    "zai/glm-5",
+    "anthropic/claude-opus-4-5"
+  ],
+  "packages": [
+    "npm:pi-annotate",
+    "npm:pi-markdown-preview",
+    "npm:pi-mcporter",
+    "npm:pi-notify",
+    "npm:pi-updater"
   ]
 }

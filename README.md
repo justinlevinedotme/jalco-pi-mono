@@ -18,6 +18,8 @@ My personal configuration and agent setup for [pi](https://github.com/badlogic/p
 | **pi-webfetch** | Fetches and converts web content to markdown, text, or HTML. Read-only URL fetching with auto HTTPS upgrade. | [IgorWarzocha](https://github.com/IgorWarzocha) |
 | **pi-markdown-preview** | Rendered markdown + LaTeX preview with terminal, browser, and PDF output. Supports Mermaid diagrams, syntax highlighting, math rendering, and theme-aware styling. Requires Pandoc. | [omaclaren](https://github.com/omaclaren/pi-markdown-preview) |
 | **pi-notify** | Native desktop notifications when agent finishes and waits for input. Supports Ghostty, iTerm2, WezTerm, Kitty, tmux, and Windows Terminal via OSC escape sequences. | [ferologics](https://github.com/ferologics/pi-notify) |
+| **pi-annotate** | Visual browser-to-AI annotation — click elements, add comments, capture screenshots with selectors, box model, and accessibility data. Requires Brave extension + native host (see install script). | [nicobailon](https://github.com/nicobailon/pi-annotate) |
+| **pi-mcporter** | Single-tool MCPorter bridge for on-demand MCP server access. Discover, describe, and call MCP tools through one `mcporter` proxy tool without burning context. Uses MCPorter runtime for server management. | [mavam](https://github.com/mavam/pi-mcporter) |
 | **pi-updater** | Codex-style auto-updater for pi — checks for new versions on startup, prompts to install, and provides `/update` command for manual checks. | [tonze](https://github.com/tonze/pi-updater) |
 | **question** | Ask the user a single question with selectable options. Full custom UI with arrow-key navigation and free-form "Type something" input. | [pi examples](https://github.com/badlogic/pi-mono) |
 | **questionnaire** | Ask one or more questions with a tab-based interface. Supports multi-step wizards for clarifying requirements and preferences. | [pi examples](https://github.com/badlogic/pi-mono) |
@@ -28,7 +30,7 @@ My personal configuration and agent setup for [pi](https://github.com/badlogic/p
 | Skill | Description | Credit |
 |-------|-------------|--------|
 | **agent-browser** | Browser automation CLI for AI agents — navigate pages, fill forms, click buttons, take screenshots, extract data. | [agent-browser](https://github.com/AgoraSquare/agent-browser) |
-| **browser-tools** | Interactive browser automation via Chrome DevTools Protocol — navigate, evaluate JS, screenshot, pick elements, extract content. Requires Chrome with remote debugging on `:9222`. | [pi-skills](https://github.com/badlogic/pi-skills) |
+| **browser-tools** | Interactive browser automation via Chrome DevTools Protocol — navigate, evaluate JS, screenshot, pick elements, extract content. Configured for Brave Browser with remote debugging on `:9222`. | [pi-skills](https://github.com/badlogic/pi-skills) |
 | **component-engineering** | React component engineering standard — accessibility, composition, and styling patterns. | [IgorWarzocha](https://github.com/IgorWarzocha) |
 | **exa** | Web search, content crawling, code context, company research, and deep AI research via Exa. Generated from MCP with [MCPorter](https://github.com/steipete/mcporter). | [Exa](https://exa.ai) |
 | **find-skills** | Discover and install agent skills from the skills.sh ecosystem. | [skills ecosystem](https://github.com/anthropics/skills) |
@@ -48,9 +50,9 @@ Pi [intentionally ships without MCP](https://mariozechner.at/posts/2025-11-02-wh
 - **Hard to extend.** Modifying an MCP server means understanding its codebase. Adding a new CLI script takes minutes.
 - **Skills are simpler.** A CLI tool with a README is all an agent needs. It already knows how to write code and use Bash.
 
-This setup previously used `pi-mcp-adapter` to expose MCP servers as tools. It's been removed in favor of skills — plain CLI tools the agent calls via `bash`.
+For tools used regularly (like `grep_app` and `exa`), [MCPorter](https://github.com/steipete/mcporter) converts MCP servers into standalone CLIs installed as skills — no MCP protocol at runtime. Use the `/mcporter` prompt template to generate and install one.
 
-When you *do* want something from the MCP ecosystem, [MCPorter](https://github.com/steipete/mcporter) bridges the gap: it converts any MCP server into a standalone CLI that pi can call without the MCP protocol at runtime. Use the `/mcporter` prompt template to generate and install one as a skill.
+For on-demand or stateful MCP access, [pi-mcporter](https://github.com/mavam/pi-mcporter) provides a single proxy tool (`mcporter`) that connects to MCP servers through the MCPorter runtime, keeping context small while covering the long tail of servers you haven't extracted into skills yet.
 
 ## Prompt Templates
 
@@ -85,11 +87,14 @@ git clone https://github.com/justinlevinedotme/jalco-pi-mono.git ~/jalco-pi-mono
 cd ~/jalco-pi-mono
 stow -t ~ pi
 
-# Install extension dependencies
+# Install extension import dependencies
 cd ~/.pi/agent/extensions && npm install
 cd ~/.pi/agent/extensions/pi-rfc-keywords && npm install
 cd ~/.pi/agent/extensions/pi-todomaster-master && npm install  # or: bun install
 cd ~/.pi/agent/extensions/pi-webfetch && npm install
+
+# npm packages in settings.json (pi-annotate, pi-mcporter, pi-notify, etc.)
+# are auto-installed by pi on first startup
 ```
 
 ## Usage
@@ -114,8 +119,8 @@ jalco-pi-mono/
 │           ├── prompts/            # Prompt templates
 │           │   └── mcporter.md     # /mcporter — MCP→CLI generator
 │           ├── extensions/         # Custom extensions (.ts)
-│           │   ├── package.json    # Shared extension dependencies + npm extensions
-│           │   ├── node_modules/   # npm-installed extensions (pi-updater)
+│           │   ├── package.json    # Shared import dependencies (typebox, pi-ai, etc.)
+│           │   ├── node_modules/   # Import dependencies for local extensions
 │           │   ├── *.ts            # Single-file extensions
 │           │   ├── hot-reload-extension-v2/
 │           │   ├── pi-agent-manager/
@@ -145,13 +150,13 @@ jalco-pi-mono/
 - `settings.json` — default provider/model
 - `prompts/*.md` — prompt templates
 - `extensions/*.ts` — custom tools & event handlers
-- `extensions/package.json` — extension npm dependencies
+- `extensions/package.json` — shared import dependencies for local extensions
 - `skills/` — installed pi skills
 
 ### What's ignored
 
 - `auth.json` — API keys & credentials
-- `mcp.json` / `mcp-cache.json` — MCP config (no longer used)
+- `mcp.json` / `mcp-cache.json` — MCP config (managed by MCPorter runtime)
 - `sessions/` — conversation history
 - `bin/` — binaries (pi recreates on install)
 - `node_modules/` — reinstall with `npm install`
@@ -161,5 +166,7 @@ jalco-pi-mono/
 - [pi](https://github.com/badlogic/pi-mono) by [badlogic](https://github.com/badlogic) — the coding agent that makes this all possible
 - [pi examples](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions) — source of several extensions in this repo
 - [MCPorter](https://github.com/steipete/mcporter) by [steipete](https://github.com/steipete) — MCP-to-CLI toolkit for generating skills from MCP servers
+- [pi-annotate](https://github.com/nicobailon/pi-annotate) by [nicobailon](https://github.com/nicobailon) — visual browser-to-AI annotation with element picking, comments, and screenshots
+- [pi-mcporter](https://github.com/mavam/pi-mcporter) by [mavam](https://github.com/mavam) — single-tool MCPorter bridge for on-demand MCP access
 - [IgorWarzocha](https://github.com/IgorWarzocha) — pi-rfc-keywords, pi-todomaster, pi-webfetch, pi-agent-manager extensions, component-engineering and security skills (originally from jalco-opencode)
 
