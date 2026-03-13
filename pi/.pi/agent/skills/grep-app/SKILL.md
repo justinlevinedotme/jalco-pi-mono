@@ -1,5 +1,5 @@
 ---
-name: grep_app
+name: grep-app
 description: Search for real-world code examples across a million GitHub repositories. Use when you need to find actual code patterns, library usage examples, or implementation patterns. Triggers include "search GitHub for", "find code examples of", "how do developers use", "show real-world usage of", or any need to see production code patterns.
 ---
 

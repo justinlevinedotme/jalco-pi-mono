@@ -39,6 +39,7 @@ My personal configuration and agent setup for [pi](https://github.com/badlogic/p
 | **pi-skills** | Meta-skill for creating pi skills — progressive disclosure patterns, bundled resources (scripts/references/assets), MCP-to-CLI conversion via MCPorter, and best practices. Combines Anthropic methodology, OpenCode patterns, and practical workflows. | Synthesized from [Anthropic](https://github.com/anthropics/skills), [jalco-opencode](https://github.com/justinlevinedotme/jalco-opencode), and [thepopebot](https://github.com/stephengpope/thepopebot) |
 | **security-ai-keys** | Detect leaked AI provider API keys (OpenAI, Anthropic, etc.) in codebases. | [IgorWarzocha](https://github.com/IgorWarzocha) |
 | **security-secrets** | High-signal secret/credential scanning with automated scripts. | [IgorWarzocha](https://github.com/IgorWarzocha) |
+| **rfc-xml-style** | RFC 2119 keywords and XML tag structure guide for agent prompts, skills, and internal docs. Provides keyword semantics, XML tag catalog, nesting best practices, and before/after examples. | custom |
 | **shadcn-ui** | Complete shadcn/ui component library patterns including installation, configuration, and accessible React components. | [skills ecosystem](https://github.com/anthropics/skills) |
 
 ## Why No MCP?
@@ -59,6 +60,7 @@ For on-demand or stateful MCP access, [pi-mcporter](https://github.com/mavam/pi-
 | Template | Description |
 |----------|-------------|
 | **`/mcporter`** | Generate a CLI from any MCP server using [MCPorter](https://github.com/steipete/mcporter) and install it as a pi skill. Usage: `/mcporter context7` |
+| **`/refactor-rfc-xml`** | Refactor all markdown files in a folder into RFC 2119 + XML tag structure. Loads the `rfc-xml-style` skill automatically. Usage: `/refactor-rfc-xml ./path/to/folder` |
 
 ## Configuration
 
@@ -117,7 +119,8 @@ jalco-pi-mono/
 │       └── agent/
 │           ├── settings.json       # Pi settings (provider, model)
 │           ├── prompts/            # Prompt templates
-│           │   └── mcporter.md     # /mcporter — MCP→CLI generator
+│           │   ├── mcporter.md     # /mcporter — MCP→CLI generator
+│           │   └── refactor-rfc-xml.md  # /refactor-rfc-xml — batch RFC+XML refactoring
 │           ├── extensions/         # Custom extensions (.ts)
 │           │   ├── package.json    # Shared import dependencies (typebox, pi-ai, etc.)
 │           │   ├── node_modules/   # Import dependencies for local extensions
@@ -137,6 +140,7 @@ jalco-pi-mono/
 │               ├── git/
 │               ├── grep_app/
 │               ├── pi-skills/
+│               ├── rfc-xml-style/
 │               ├── security-ai-keys/
 │               ├── security-secrets/
 │               └── shadcn-ui/

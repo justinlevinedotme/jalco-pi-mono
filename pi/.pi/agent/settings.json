@@ -1,6 +1,6 @@
 {
   "theme": "geist-dark",
-  "lastChangelogVersion": "0.57.0",
+  "lastChangelogVersion": "0.57.1",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-4-6",
   "defaultThinkingLevel": "off",
@@ -11,7 +11,9 @@
     "openai-codex/gpt-5.3-codex",
     "anthropic/claude-opus-4-6",
     "zai/glm-5",
-    "anthropic/claude-opus-4-5"
+    "anthropic/claude-opus-4-5",
+    "openai-codex/gpt-5.3-codex-spark",
+    "openai-codex/gpt-5.4"
   ],
   "packages": [
     "npm:pi-annotate",
