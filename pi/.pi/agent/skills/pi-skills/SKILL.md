@@ -1,6 +1,6 @@
 ---
 name: pi-skills
-description: Create and manage pi skills with proper SKILL.md format, frontmatter, and organization. Use for skill creation, naming conventions, bundled resources (scripts/references/assets), progressive disclosure patterns, and MCP-to-CLI conversion via MCPorter. Use proactively when user says "create a skill", "SKILL.md", "convert MCP server", "MCPorter", or asks about skill structure.
+description: Create and manage pi skills with proper SKILL.md format, frontmatter, and organization. Use for skill creation, naming conventions, bundled resources (scripts/references/assets), progressive disclosure patterns, MCP-related skill documentation, and deciding when to use skills vs Pi MCP servers. Use proactively when user says "create a skill", "SKILL.md", "add a skill", "document this workflow", "add MCP server docs", or asks about skill structure.
 ---
 
 # Pi Skills
@@ -104,6 +104,26 @@ Common workflows or usage patterns.
 Common issues and solutions.
 ```
 
+## Auth, Secrets, and Environment Variables
+
+When a skill needs tokens, API keys, hostnames, or other auth-related configuration:
+
+- put secrets in shell environment variables
+- prefer `~/.zshrc.local` for persistent local machine config
+- prefer appending with `echo 'export ...' >> ~/.zshrc.local`
+- tell the user to `source ~/.zshrc.local` after changes
+- do **not** hardcode secrets in `SKILL.md`, scripts, repo config, or examples unless they are obviously placeholders
+
+**Recommended pattern**:
+
+```bash
+echo 'export COOLIFY_BASE_URL="https://example.com"' >> ~/.zshrc.local
+echo 'export COOLIFY_ACCESS_TOKEN="your-token"' >> ~/.zshrc.local
+source ~/.zshrc.local
+```
+
+Note: repeated `echo >> ~/.zshrc.local` commands create duplicate lines. If updating an existing value, replace or remove the old line first.
+
 ## Bundled Resources
 
 ### Scripts (`scripts/`)
@@ -196,32 +216,6 @@ Once you've identified the product, read:
 4. For debugging: `references/<product>/gotchas.md`
 ```
 
-**Reference File Standards**:
-
-Each product directory should have:
-- `README.md`: Overview, When to use, When not to use, See also
-- `api.md`: Core APIs, Parameters, Return values, Examples
-- `configuration.md`: Required config, Optional config, Environment notes
-- `patterns.md`: Common workflows, Recommended architecture, Performance patterns
-- `gotchas.md`: Limits, Common errors, Debug checklist
-
-**Gotchas Template**:
-```markdown
-## <Problem Name>
-
-**Symptom**: <error text or behavior>
-**Root cause**: <underlying reason>
-**Fix**: <specific remediation steps>
-
-```language
-// BAD
-...
-
-// GOOD
-...
-```
-```
-
 ### Assets (`assets/`)
 
 Files not loaded into context, but used in the output the agent produces.
@@ -231,9 +225,36 @@ Files not loaded into context, but used in the output the agent produces.
 - Boilerplate code
 - Sample documents that get copied or modified
 
-**Example**: `assets/template.html` for HTML boilerplate
+## Skills vs MCP Servers
 
-**Benefits**: Separates output resources from documentation
+Use a **skill** when:
+- the main value is guidance, workflow, conventions, examples, or scripts
+- the agent needs to know *how* to approach a task
+- you want routing logic or documentation for a capability
+
+Use an **MCP server** when:
+- there is a real external tool or API to call
+- the tool surface is structured and remote
+- Pi should discover and invoke live tools dynamically
+
+Often you want both:
+- an MCP server for the actual tool calls
+- a skill for best practices, setup, and workflow guidance
+
+## MCP Guidance for Skills
+
+Going forward:
+- prefer Pi MCP support through `pi-mcp-adapter`
+- configure MCP servers in `~/.pi/agent/mcp.json`
+- put auth in `~/.zshrc.local`
+- use `${VAR}` interpolation in `mcp.json`
+- do **not** recommend MCPorter as the default path
+
+If documenting an MCP-backed workflow, mention:
+- how to install `pi-mcp-adapter`
+- where MCP config lives
+- where auth lives
+- whether the skill is standalone or depends on a live MCP server
 
 ## Core Principles
 
@@ -299,66 +320,27 @@ touch ~/.pi/agent/skills/my-skill/SKILL.md
 
 Add frontmatter and body following the format above.
 
-#### Option B: Convert MCP Server with MCPorter
+#### Option B: Create an MCP Guidance Skill
 
-For MCP servers, use MCPorter to generate a standalone CLI:
+If the task involves an MCP server, prefer creating:
+- MCP server config in `~/.pi/agent/mcp.json`
+- a skill that explains setup, auth, workflows, and common commands
 
-**Step 1: Discover Available MCP Servers**
+Recommended flow:
 
-```bash
-npx mcporter list
-```
-
-**Step 2: Inspect Server Tools**
-
-```bash
-npx mcporter list <server-name> --all-parameters
-```
-
-Review tool signatures and parameters.
-
-**Step 3: Generate CLI**
-
-Try compiled binary first (standalone, no runtime):
-```bash
-npx mcporter generate-cli <server-name> --compile --output /tmp/mcporter-gen/<server-name>
-```
-
-If compile fails, use bundled JS (requires bun):
-```bash
-npx mcporter generate-cli <server-name> --bundle /tmp/mcporter-gen/<server-name>.js
-```
-
-**Step 4: Test the CLI**
-
-```bash
-bun /tmp/mcporter-gen/<server-name>.js
-```
-
-Pick one tool and test it.
-
-**Step 5: Install as Skill**
-
-```bash
-mkdir -p ~/.pi/agent/skills/<server-name>
-cp /tmp/mcporter-gen/<server-name>.js ~/.pi/agent/skills/<server-name>/
-```
-
-**Step 6: Write SKILL.md**
-
-Create `~/.pi/agent/skills/<server-name>/SKILL.md` with:
-- Frontmatter: name, description (what tools do, when to use)
-- Setup: Any required env vars or auth
-- Usage: Show CLI commands with examples for each tool
-- Tool Reference: List each tool with parameters
-
-Use output from `npx mcporter list <server-name> --all-parameters` as reference.
-
-**Step 7: Clean Up**
-
-```bash
-rm -f ./<server-name>.ts  # Remove template if created
-```
+1. Install adapter if needed:
+   ```bash
+   pi install npm:pi-mcp-adapter
+   ```
+2. Append auth to `~/.zshrc.local` with `echo 'export ...' >> ~/.zshrc.local`
+3. Run `source ~/.zshrc.local`
+4. Add server config to `~/.pi/agent/mcp.json`
+5. Create a skill documenting:
+   - what the MCP server does
+   - when to use it
+   - required env vars
+   - common workflows
+   - troubleshooting
 
 ### 4. Implement Resources
 
@@ -377,11 +359,13 @@ Follow the format above:
 - Clear setup instructions
 - Concrete usage examples with full paths
 - Reference bundled resources
+- Mention env-var based auth where applicable
 
 **Writing Guidelines**:
 - Use imperative/infinitive form
 - Include "when to use" information in description, NOT in body
 - Body is only loaded after triggering
+- Prefer durable setup guidance over one-off hacks
 
 ### 6. Iterate
 
@@ -413,7 +397,12 @@ Speech-to-text using Groq Whisper API.
 
 ## Setup
 
-Requires `GROQ_API_KEY` environment variable.
+Append `GROQ_API_KEY` to `~/.zshrc.local`, then reload:
+
+```bash
+echo 'export GROQ_API_KEY="your-groq-key"' >> ~/.zshrc.local
+source ~/.zshrc.local
+```
 
 ## Usage
 
@@ -421,16 +410,6 @@ Requires `GROQ_API_KEY` environment variable.
 bash ~/.pi/agent/skills/transcribe/transcribe.sh <audio-file>
 ```
 ```
-
-### MCP-Generated CLI Skill
-
-```
-~/.pi/agent/skills/grep_app/
-├── SKILL.md
-└── grep_app.js
-```
-
-**SKILL.md**: See `references/mcporter-example.md` for complete example.
 
 ### Complex Platform Skill
 
@@ -452,7 +431,7 @@ bash ~/.pi/agent/skills/transcribe/transcribe.sh <audio-file>
 
 ## Validation
 
-After creating a skill, test it:
+After creating or updating a skill, test it:
 
 1. Restart pi or wait for hot-reload
 2. Verify skill appears in skill list
@@ -467,6 +446,7 @@ After creating a skill, test it:
 - Use `references/` for detailed documentation
 - Include validation steps
 - Use absolute paths from skill directory in examples
+- Put auth and secrets in environment variables, preferably `~/.zshrc.local`
 
 ### SHOULD
 - Prefer bash scripts for simple tasks
@@ -474,6 +454,7 @@ After creating a skill, test it:
 - Test all scripts before publishing
 - Include gotchas.md for complex domains
 - Keep reference files under 250 lines each
+- Distinguish clearly between standalone skills and MCP-backed workflows
 
 ### MUST NOT
 - Create overly broad skills (prefer focused, composable skills)
@@ -481,9 +462,9 @@ After creating a skill, test it:
 - Include secrets or credentials in skill files
 - Create deep reference chains (>1 level)
 - Add extraneous documentation files
+- Recommend legacy MCPorter workflows as the preferred MCP path
 
 ## Related Resources
 
-See `references/mcporter-example.md` for a complete MCPorter workflow example.
 See `references/workflows.md` for sequential workflow patterns.
 See `references/output-patterns.md` for template and example patterns.

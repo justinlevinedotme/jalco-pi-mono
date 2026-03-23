@@ -1,8 +1,8 @@
 {
   "theme": "geist-dark",
-  "lastChangelogVersion": "0.57.1",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6",
+  "lastChangelogVersion": "0.61.1",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "off",
   "quietStartup": true,
   "enabledModels": [
@@ -18,7 +18,7 @@
   "packages": [
     "npm:pi-annotate",
     "npm:pi-markdown-preview",
-    "npm:pi-mcporter",
+    "npm:pi-mcp-adapter",
     "npm:pi-notify",
     "npm:pi-updater"
   ]
