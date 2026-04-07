@@ -1,6 +1,0 @@
-[submodule "submodules/pi-skills-sh"]
-	path = submodules/pi-skills-sh
-	url = https://github.com/jal-co/pi-skills-sh.git
-[submodule "submodules/pi-copy-output"]
-	path = submodules/pi-copy-output
-	url = https://github.com/jal-co/pi-copy-output.git

@@ -33,6 +33,8 @@
     "npm:pi-notify",
     "npm:pi-updater",
     "npm:@howaboua/pi-codex-conversion",
-    "npm:claude-agent-sdk-pi"
+    "npm:claude-agent-sdk-pi",
+    "npm:pi-copy-output",
+    "npm:pi-skills-sh"
   ]
 }

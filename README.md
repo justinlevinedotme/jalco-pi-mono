@@ -290,9 +290,7 @@ jalco-pi-mono/
 │           │   ├── node_modules/   # Import dependencies for local extensions
 │           │   ├── *.ts            # Single-file extensions
 │           │   ├── pi-agent-manager/
-│           │   ├── pi-copy-output/ → submodules/pi-copy-output/extensions
 │           │   ├── pi-rfc-keywords/
-│           │   ├── pi-skills-sh/   → submodules/pi-skills-sh/extensions
 │           │   ├── pi-todomaster-master/
 │           │   └── pi-webfetch/
 │           └── skills/             # Installed skills
@@ -313,10 +311,6 @@ jalco-pi-mono/
 │               ├── security-ai-keys/
 │               ├── security-secrets/
 │               └── shadcn-ui/
-├── submodules/                     # Git submodules for own extensions
-│   ├── pi-copy-output/            # github.com/jal-co/pi-copy-output
-│   └── pi-skills-sh/              # github.com/jal-co/pi-skills-sh
-├── .gitmodules
 ├── .gitignore
 ├── .stow-local-ignore
 └── README.md
