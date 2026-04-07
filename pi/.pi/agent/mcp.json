@@ -1,0 +1,88 @@
+{
+  "settings": {
+    "toolPrefix": "server",
+    "idleTimeout": 10
+  },
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "coolify": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@masonator/coolify-mcp"
+      ],
+      "env": {
+        "COOLIFY_BASE_URL": "${COOLIFY_BASE_URL}",
+        "COOLIFY_ACCESS_TOKEN": "${COOLIFY_ACCESS_TOKEN}"
+      },
+      "directTools": true
+    },
+    "insomnia": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-insomnia"
+      ]
+    },
+    "exa": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "proxmox": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bldg-7/proxmox-mcp"
+      ],
+      "env": {
+        "PROXMOX_HOST": "${PROXMOX_HOST}",
+        "PROXMOX_PORT": "${PROXMOX_PORT}",
+        "PROXMOX_USER": "${PROXMOX_USER}",
+        "PROXMOX_TOKEN_NAME": "${PROXMOX_TOKEN_NAME}",
+        "PROXMOX_TOKEN_VALUE": "${PROXMOX_TOKEN_VALUE}",
+        "PROXMOX_SSL_MODE": "${PROXMOX_SSL_MODE}",
+        "PROXMOX_ALLOW_ELEVATED": "${PROXMOX_ALLOW_ELEVATED}"
+      },
+      "directTools": false
+    },
+    "discord": {
+      "command": "/opt/homebrew/opt/openjdk/bin/java",
+      "args": [
+        "-jar",
+        "/Users/justin/Documents/Github/discord-mcp/target/discord-mcp-1.0.0.jar"
+      ],
+      "env": {
+        "DISCORD_TOKEN": "${DISCORD_TOKEN}",
+        "DISCORD_GUILD_ID": "${DISCORD_GUILD_ID}"
+      }
+    },
+    "google-drive-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@piotr-agier/google-drive-mcp"
+      ],
+      "env": {
+        "GOOGLE_DRIVE_OAUTH_CREDENTIALS": "${GOOGLE_DRIVE_OAUTH_CREDENTIALS}"
+      }
+    },
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}&features=docs,account,database,debugging,development,functions,branching,storage",
+      "auth": "bearer",
+      "bearerTokenEnv": "SUPABASE_ACCESS_TOKEN",
+      "directTools": true
+    }
+  }
+}

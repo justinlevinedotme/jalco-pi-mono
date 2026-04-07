@@ -3,9 +3,9 @@
 # Secrets & auth
 pi/.pi/agent/auth.json
 
-# MCP config (removed — using MCPorter CLIs as skills instead)
-pi/.pi/agent/mcp.json
+# MCP caches (regenerated at runtime)
 pi/.pi/agent/mcp-cache.json
+pi/.pi/agent/mcp-npx-cache.json
 
 # Sessions (ephemeral, large)
 pi/.pi/agent/sessions/
