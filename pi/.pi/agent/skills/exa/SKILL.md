@@ -5,98 +5,122 @@ description: Web search, content crawling, code context lookup, company research
 
 # Exa
 
-CLI generated from the Exa MCP server via [MCPorter](https://github.com/steipete/mcporter).
+Web search, crawling, code context, and deep research via the Exa MCP server (`exa-mcp-server`).
 
 ## Setup
 
-Requires `EXA_API_KEY` environment variable to be set.
+- **MCP server:** `exa-mcp-server` (npm, stdio transport)
+- **Config:** `~/.pi/agent/mcp.json` → `mcpServers.exa`
+- **Auth:** `EXA_API_KEY` in `~/.zshrc.local`, interpolated via `${EXA_API_KEY}`
+- **Mode:** Proxy (accessed through the `mcp` gateway tool)
 
-## Tools
+## When to Use
 
-### Web Search
+- Search the web for any topic
+- Fetch full content from a known URL
+- Find code examples, docs, and programming solutions
+- Research a company
+- Run deep AI research reports on complex topics
+
+## Available Tools
+
+Access all tools through the `mcp` gateway:
+
+```
+mcp({ server: "exa" })           # List available tools
+mcp({ search: "exa" })           # Search for exa tools
+mcp({ describe: "tool_name" })   # Show tool details
+```
+
+### web_search_exa (default, enabled)
 
 Search the web for any topic. Returns clean text content from top results.
 
-```bash
-./exa web-search-exa --query "your search query"
-./exa web-search-exa --query "latest news on AI" --num-results 5
-./exa web-search-exa --query "breaking news" --livecrawl preferred
-./exa web-search-exa --query "quick answer" --type fast
+```
+mcp({ tool: "web_search_exa", args: '{"query": "latest AI agent frameworks", "numResults": 5}' })
 ```
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--query` | yes | Search query |
-| `--num-results` | no | Number of results (default: 8) |
-| `--livecrawl` | no | `fallback` (default) or `preferred` |
-| `--type` | no | `auto` (default) or `fast` |
-| `--context-max-characters` | no | Max characters for context (default: 10000) |
+| `query` | yes | Search query |
+| `numResults` | no | Number of results (default: 8) |
+| `livecrawl` | no | `fallback` (default) or `preferred` |
+| `type` | no | `auto` (default) or `fast` |
+| `contextMaxCharacters` | no | Max characters for context (default: 10000) |
 
-### Crawl Page
+### get_code_context_exa (default, enabled)
 
-Get the full content of a specific webpage by URL.
+Find code examples, documentation, and programming solutions from GitHub, Stack Overflow, and docs.
 
-```bash
-./exa crawling-exa --url "https://example.com"
-./exa crawling-exa --url "https://example.com/docs" --max-characters 10000
+```
+mcp({ tool: "get_code_context_exa", args: '{"query": "React useState hook examples", "tokensNum": 10000}' })
 ```
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--url` | yes | URL to crawl |
-| `--max-characters` | no | Max characters to extract (default: 3000) |
+| `query` | yes | Programming search query |
+| `tokensNum` | no | Tokens to return, 1000–50000 (default: 5000) |
 
-### Code Context
+### crawling_exa (default, enabled)
 
-Find code examples, documentation, and programming solutions. Searches GitHub, Stack Overflow, and official docs.
+Get the full content of a specific webpage from a known URL.
 
-```bash
-./exa get-code-context-exa --query "React useState hook examples"
-./exa get-code-context-exa --query "Express.js middleware" --tokens-num 10000
+```
+mcp({ tool: "crawling_exa", args: '{"url": "https://example.com/docs"}' })
 ```
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--query` | yes | Programming search query |
-| `--tokens-num` | no | Tokens to return, 1000–50000 (default: 5000) |
+| `url` | yes | URL to crawl |
+| `maxCharacters` | no | Max characters to extract (default: 3000) |
 
-### Company Research
+### company_research_exa (optional)
 
 Research a company for business information, news, and insights.
 
-```bash
-./exa company-research-exa --company-name "Anthropic"
-./exa company-research-exa --company-name "Vercel" --num-results 5
-```
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `companyName` | yes | Company name |
+| `numResults` | no | Number of results (default: 3) |
+
+### deep_researcher_start / deep_researcher_check (optional)
+
+Start an AI research agent for complex topics (15s–3min depending on model).
+
+**Start:**
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--company-name` | yes | Company name |
-| `--num-results` | no | Number of results (default: 3) |
+| `instructions` | yes | Detailed research question |
+| `model` | no | `exa-research-fast` (~15s), `exa-research` (15–45s), `exa-research-pro` (45s–3min) |
 
-### Deep Research
-
-Start an AI research agent for complex topics. Takes 15 seconds to 3 minutes depending on model.
-
-```bash
-# Start research
-./exa deep-researcher-start --instructions "Analyze the competitive landscape of AI coding assistants"
-
-# Check results (use the research ID from the start command)
-./exa deep-researcher-check --research-id "research_abc123"
-```
-
-**Start parameters:**
+**Check:**
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `--instructions` | yes | Detailed research question |
-| `--model` | no | `exa-research-fast` (default, ~15s), `exa-research` (15–45s), `exa-research-pro` (45s–3min) |
+| `researchId` | yes | Research ID from start |
 
-**Check parameters:**
+Keep calling check until status is `completed`.
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `--research-id` | yes | Research ID from `deep-researcher-start` |
+## Env Vars
 
-Keep calling `deep-researcher-check` until status is `completed`.
+| Variable | Location | Description |
+|----------|----------|-------------|
+| `EXA_API_KEY` | `~/.zshrc.local` | Exa API key from [dashboard.exa.ai](https://dashboard.exa.ai/api-keys) |
+
+## Troubleshooting
+
+### Server not connecting
+- Verify `EXA_API_KEY` is set: `echo $EXA_API_KEY`
+- Run `source ~/.zshrc.local`
+- Restart Pi
+- Check: `mcp({ server: "exa" })`
+
+### Rate limit errors (429)
+- Free plan has rate limits. Ensure you're using your own API key.
+- Get a key at [dashboard.exa.ai/api-keys](https://dashboard.exa.ai/api-keys)
+
+### Tools not appearing
+- Restart Pi after config changes
+- Verify `~/.pi/agent/mcp.json` is valid JSON
+- Try `mcp({ connect: "exa" })` to force reconnect
