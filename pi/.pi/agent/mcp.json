@@ -21,14 +21,15 @@
         "COOLIFY_BASE_URL": "${COOLIFY_BASE_URL}",
         "COOLIFY_ACCESS_TOKEN": "${COOLIFY_ACCESS_TOKEN}"
       },
-      "directTools": true
+      "directTools": false
     },
     "insomnia": {
       "command": "npx",
       "args": [
         "-y",
         "mcp-insomnia"
-      ]
+      ],
+      "directTools": true
     },
     "exa": {
       "command": "npx",
@@ -76,13 +77,51 @@
       ],
       "env": {
         "GOOGLE_DRIVE_OAUTH_CREDENTIALS": "${GOOGLE_DRIVE_OAUTH_CREDENTIALS}"
-      }
+      },
+      "directTools": false
     },
     "supabase": {
       "url": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}&features=docs,account,database,debugging,development,functions,branching,storage",
       "auth": "bearer",
       "bearerTokenEnv": "SUPABASE_ACCESS_TOKEN",
-      "directTools": true
+      "directTools": false
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "jobs-db": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.rapidapi.com",
+        "--header",
+        "x-api-host: active-jobs-db.p.rapidapi.com",
+        "--header",
+        "x-api-key: ${RAPIDAPI_KEY}"
+      ]
+    },
+    "jsearch": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.rapidapi.com",
+        "--header",
+        "x-api-host: jsearch.p.rapidapi.com",
+        "--header",
+        "x-api-key: ${RAPIDAPI_KEY}"
+      ]
+    },
+    "fusion360": {
+      "command": "/Users/justin/fusion360-mcp-server/.venv/bin/python",
+      "args": ["/Users/justin/fusion360-mcp-server/src/main.py", "--mcp"],
+      "cwd": "/Users/justin/fusion360-mcp-server/src"
     }
   }
 }

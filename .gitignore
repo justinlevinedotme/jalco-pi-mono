@@ -12,6 +12,7 @@ pi/.pi/agent/sessions/
 
 # Binaries (pi recreates these on install)
 pi/.pi/agent/bin/
+pi/.pi/agent/jars/
 
 # Node modules (reinstall via npm/bun install)
 pi/.pi/agent/extensions/node_modules/
@@ -23,6 +24,17 @@ pi/.pi/agent/extensions/*/dist/
 
 # MCPorter compiled binaries (regenerate with /mcporter prompt)
 pi/.pi/agent/skills/exa/exa
+
+# Personal/private skills (contain PII, voice samples, or account-specific data)
+pi/.pi/agent/skills/write-like-justin/
+pi/.pi/agent/skills/job-search/
+pi/.pi/agent/skills/real-app/
+
+# Personal prompts (contain resume details, contact info)
+pi/.pi/agent/prompts/jobs.md
+
+# Update cache (runtime state)
+pi/.pi/agent/update-cache.json
 
 # Local pi folder (root level only, not tracked stow files)
 /.pi/
