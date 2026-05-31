@@ -43,18 +43,20 @@ MUST use available question tools — MUST NOT dump a wall of text.
 
 <rules>
 
-MUST follow: `<type>/<short-description>` — lowercase, hyphens only.
+MUST follow [Conventional Branch](https://conventional-branch.github.io/): `<type>/<short-description>`.
 
 | Type | Use |
 |---|---|
-| `feat/` | New feature |
-| `fix/` | Bug fix |
+| `feat/` or `feature/` | New feature |
+| `fix/` or `bugfix/` | Bug fix |
+| `hotfix/` | Urgent production fix |
 | `chore/` | Maintenance, deps, config |
 | `refactor/` | Restructuring, no behaviour change |
+| `perf/` | Performance |
 | `docs/` | Documentation only |
+| `style/` | Formatting, visual changes |
 | `test/` | Tests |
-| `ci/` | CI/CD |
-| `hotfix/` | Urgent production fix |
+| `ci/` or `build/` | CI/CD, build system |
 | `release/` | Release prep |
 
 <examples>
@@ -63,14 +65,24 @@ MUST follow: `<type>/<short-description>` — lowercase, hyphens only.
 feat/user-avatar-upload
 fix/session-timeout-loop
 hotfix/null-pointer-checkout
+release/v1.4.0
 </output>
 </example>
 </examples>
 
-- Description MUST be under 50 characters after the prefix
+**Character rules (per Conventional Branch):**
+
+- MUST use only lowercase alphanumerics, hyphens, and dots
+- MUST NOT use consecutive hyphens or dots
+- MUST NOT lead or trail the description with a hyphen or dot
+- Description SHOULD be under 50 characters after the prefix
+
+**Workflow:**
+
 - Features MUST branch from `main` or `develop`; hotfixes from `main`
 - MUST delete branch after merge
 - MUST NOT commit directly to `main`, `master`, or `develop`
+- When a repo declares its own allowed branch types (e.g. `CONTRIBUTING.md`, a commit-check or labeler config), those MUST take precedence over this table
 
 </rules>
 
@@ -80,10 +92,10 @@ hotfix/null-pointer-checkout
 
 <rules>
 
-MUST follow [Conventional Commits](https://www.conventionalcommits.org/):
+MUST follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/):
 
 ```
-<type>(<scope>): <summary>
+<type>(<scope>)(!): <summary>
 
 [body]
 
@@ -103,11 +115,19 @@ MUST follow [Conventional Commits](https://www.conventionalcommits.org/):
 | `style` | Formatting only |
 | `revert` | Reverts a commit |
 
-**Summary:** imperative mood, lowercase after colon, no trailing period, ≤ 72 characters, specific.
+**Summary:** imperative mood, lowercase after colon, no trailing period, specific. SHOULD be ≤ 72 characters; MUST NOT exceed the repo's configured limit (e.g. commit-check `subject_max_length`).
+
+**Scope:** OPTIONAL, in parentheses (e.g. `feat(parser):`).
 
 **Body:** what and why (not how), wrapped at 72 characters, blank line after summary.
 
-**Footer:** SHOULD reference issues (`Closes #123`). MUST declare `BREAKING CHANGE: <description>`.
+**Footer:** SHOULD reference issues (`Closes #123`).
+
+**Breaking changes (per the spec):**
+
+- A breaking change MUST be signalled by a `!` before the colon (`feat!:`, `feat(api)!:`) and/or a `BREAKING CHANGE: <description>` footer
+- When `!` is used without a footer, the summary describes the break
+- A `BREAKING CHANGE` footer MAY appear on any type
 
 <examples>
 <example type="correct">
@@ -117,6 +137,13 @@ feat(auth): add OAuth2 login with Google
 Allows sign-in via Google account. Token stored in httpOnly cookie.
 
 Closes #88
+</output>
+</example>
+<example type="correct">
+<output>
+feat(api)!: drop support for Node 18
+
+BREAKING CHANGE: minimum supported runtime is now Node 20.
 </output>
 </example>
 <example type="wrong">
@@ -132,7 +159,40 @@ WIP
 
 ---
 
-## 4. Pull Requests & Review
+## 4. Versioning
+
+<rules>
+
+MUST follow [Semantic Versioning 2.0.0](https://semver.org/): `MAJOR.MINOR.PATCH`.
+
+| Bump | When |
+|---|---|
+| `MAJOR` | Incompatible / breaking API change |
+| `MINOR` | Backwards-compatible new functionality |
+| `PATCH` | Backwards-compatible bug fix |
+
+- MAJOR MUST be incremented for any breaking change (a Conventional Commit `!` or `BREAKING CHANGE` footer maps here)
+- `feat` commits map to MINOR; `fix` commits map to PATCH
+- Pre-release versions MUST use a hyphen suffix (`1.0.0-rc.1`, `1.0.0-alpha.2`)
+- Build metadata MUST use a plus suffix (`1.0.0+20130313144700`)
+- MUST NOT mutate a released version; a new release MUST get a new version
+- `0.y.z` is for initial development — anything MAY change; the public API SHOULD NOT be considered stable
+- Once `1.0.0` is released, breaking changes MUST bump MAJOR
+
+<guidelines>
+
+For commit-driven releases, derive the bump from commits since the last tag:
+- any breaking change → MAJOR
+- else any `feat` → MINOR
+- else any `fix`/`perf` → PATCH
+
+</guidelines>
+
+</rules>
+
+---
+
+## 5. Pull Requests & Review
 
 <instructions>
 
@@ -192,7 +252,7 @@ Closes #
 
 ---
 
-## 5. Library & Tooling
+## 6. Library & Tooling
 
 <instructions>
 
@@ -227,7 +287,7 @@ If most answers are no, treat as legacy and surface the alternative.
 
 ---
 
-## 6. General Behaviour
+## 7. General Behaviour
 
 <rules>
 
@@ -241,7 +301,7 @@ If most answers are no, treat as legacy and surface the alternative.
 
 ---
 
-## 7. Editing This File
+## 8. Editing This File
 
 <instructions>
 
@@ -271,7 +331,7 @@ Any modification to this file MUST follow the [RFC-XML-STYLE-GUIDE](https://gith
 MUST follow `<ticket-id>/<short-description>` — e.g. `PROJ-123/add-login`.
 </project-override>
 
-<project-override section="4. Pull Requests & Review">
+<project-override section="5. Pull Requests & Review">
 MUST use the repo's existing PR template — skip the global template.
 </project-override>
 </output>
